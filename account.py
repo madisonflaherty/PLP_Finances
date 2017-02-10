@@ -1,8 +1,11 @@
 """
 	account.py
 	@author madison flaherty
+	@author [YOUR_NAME_HERE]
 	Simple bank account model
 """
+
+import generic_testing as t
 
 class Account:
 	"""
@@ -14,6 +17,18 @@ class Account:
 	balance = 0				# intial balance is always 0
 	transactions = []		# initially there are no transactions
 	
+	"""
+	NOTE: the "__init__" function is automatically called when you try and initialize
+	an instance of your class. It is used to initialize or verify values in that
+	particular instance. For now understand that the "self" parameter is
+	a reference to your newly made object reference and when manually accessing these methods
+	you don't need to supply it ( ie: my_account_obj.get_balance() ). 
+
+	For those particularly interested, you can check out this explanation:
+		http://metapython.blogspot.com/2010/11/python-instance-methods-how-are-they.html
+	TLDR: instance methods prepend "self" automatically for you so that you don't have
+		to do "Account.get_balance(my_account_obj)" every time! 
+	"""
 	def __init__(self, name, kind, starting_balance):
 		""" 
 		Initialize the account with a name, kind, and starting balance
@@ -57,39 +72,12 @@ def account_tests():
 	""" Tests the account structure """
 	test_account = Account('Ally', 'Checking', 0)
 
-	print( tester(test_account.get_balance, 0) )
-	print( tester(test_account.get_full_name, "Ally Checking Account") )
-	print( tester(test_account.get_transactions, []) )
+	print( t.tester(test_account.get_balance, 0) )
+	print( t.tester(test_account.get_full_name, "Ally Checking Account") )
+	print( t.tester(test_account.get_transactions, []) )
 
-	print( tester(test_account.add_single_transaction, None, [None]) )
-	print( tester(test_account.add_transactions, None, [[None]]) )
-
-
-def tester( function, expected_value, params_lst=[]):
-	""" Generic tester function, very simple. Produces string outputs for tests.
-		Expects comparison to be performed with '=='.
-		Should be later moved to a more generic "testing" file.
-
-		function_pointer -> value -> parameter_list (optional) -> string
-	"""
-	"""
-	NOTE: the following if is slightly more complicated. We are passing in a function POINTER
-		As well as the expected value. So in essence we could just do "function() == expected_value"
-		to determine if the function is working as expected. HOWEVER, this assumes that the
-		function is not taking in ANY parameters. Hence why we need this strange "*params_lst" bit.
-		The "*" is a special python shortcut that lets us convert a list in a parameter list. 
-		Therefore, if params_lst is holding the value: [1,2,3]... then function(*params_lst) is 
-		equivalent to function(1,2,3). 
-		
-		Additionally, function.__name__ abuses another python specialty in which there is
-		'metadata' about functions in what are called "function attributes". You can find
-		lists of these attributes online, but basically we can use them for non-typical
-		use cases like testing output. 
-	"""
-	if (function(*params_lst) == expected_value):
-		return function.__name__ + " passed"
-	return function.__name__ + " FAILED. Expected " + function(*params_lst) + " to be equal to " + expected_value + "."
-	
+	print( t.tester(test_account.add_single_transaction, None, [None]) )
+	print( t.tester(test_account.add_transactions, None, [[None]]) )
 
 """
 NOTE: the following structure is very common in typical python programs.
@@ -102,6 +90,4 @@ NOTE: the following structure is very common in typical python programs.
 """
 if __name__ == "__main__":
     account_tests()
-	
-		
 
